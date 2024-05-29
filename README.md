@@ -18,7 +18,7 @@ For comparaison, I took the top 3 java best-performers and another C implementat
 |       00:00.827 | [link](https://github.com/dannyvankooten/1brc)| C | [Danny van Kooten](https://github.com/dannyvankooten)|
 |       00:00.880 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_artsiomkorzun.java)| 21.0.1-graalce  |
 |       00:00.945 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_thomaswue.java)| 21.0.1-graalce |
-|       00:00.961 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_jerrinot.java)| Java   |
+|       00:00.961 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_jerrinot.java)| 21.0.1-graalce   |
 |       00:27.131 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_baseline.java)| 21.0.1-graalce  |
 
 For anyone who is interested in running the code with 1 billion rows, please contact me.
