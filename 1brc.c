@@ -34,7 +34,7 @@
 #define MAX_NAME_LEN          48
 #define MAX_THREADS           32
 
-#define HASH_BITS             16
+#define HASH_BITS             14
 #define HASH_SIZE             (1 << HASH_BITS)
 #define HASH_MASK             (HASH_SIZE - 1)
 
@@ -147,7 +147,6 @@ void *process_data(void *data) {
     memset(digit_x10, 0, sizeof(digit_x10));
     memset(digit_x100, 0, sizeof(digit_x100));
     for (int i = '0'; i <= '9'; i ++) {
-        /* win ~3% */
         digit_x10[i] = (i - '0')*10;
         digit_x100[i] = (i - '0')*100;
     }
@@ -250,7 +249,6 @@ void sort_records(struct proc_context_s *pctx) {
     int i, n;
 
     sorted = (struct city_s **)malloc(sizeof(*sorted)*pctx->entries);
-
     n = 0;
     for (i = 0; i < HASH_SIZE; i ++) {
         city = pctx->hash_table[i];
@@ -260,7 +258,6 @@ void sort_records(struct proc_context_s *pctx) {
         }
     }
     qsort(&sorted[0], pctx->entries, sizeof(struct city_s *), &cmp_entries);
-
     pctx->sorted = sorted;
 }
 
@@ -300,13 +297,11 @@ int main(const int argc, const char *argv[]) {
 
     open_file(argv[1]);
 
-    for (i = 0; i < nproc; i ++) {
+    for (i = 0; i < nproc; i ++)
         pthread_create(&ctx[i].thread_id, NULL, process_data, &ctx[i]);
-    }
 
-    for (i = 0; i < nproc; i ++) {
+    for (i = 0; i < nproc; i ++)
         pthread_join(ctx[i].thread_id, NULL);
-    }
 
     merge_result();
 

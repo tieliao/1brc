@@ -10,4 +10,13 @@ ${PROG}: 1brc.c
 
 check:
 	${PROG} ${DATA_FILE} $(nproc) > out.txt
-	diff out.txt result.txt
+	diff -q out.txt result.txt
+
+profiling:
+	gcc -pg -O -Wall -o ${PROG} 1brc.c -lpthread
+	${PROG} ${DATA_FILE} $(nproc) > /dev/null
+	gprof ${PROG} gmon.out > profiling.txt
+
+clean:
+	rm -f ${PROG} out.txt
+	rm -f gmon.out profiling.txt
