@@ -12,11 +12,13 @@ The first version of my code includes already some basic optimizations and gives
 on hashing and parsing. The final version gives an execution time of 0.4s.
 
 For comparaison, I took the top 3 java best-performers and another C implementation.
-| Result (m:s.ms) | Implementation     | Language |
-|-----------------|--------------------|----------|
-|       00:00.405 | [link](https://github.com/tieliao/1brc)| C |
-|       00:00.827 | [link](https://github.com/dannyvankooten/1brc)| C |
-|       00:00.880 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_artsiomkorzun.java)| Java   |
-|       00:00.945 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_jerrinot.java)| Java   |
+| Result (m:s.ms) | Implementation     | Language | Author |
+|-----------------|--------------------|----------|--------|
+|       00:00.405 | [link](https://github.com/tieliao/1brc)| C | [Tie Liao](https://github.com/tieliao) |
+|       00:00.827 | [link](https://github.com/dannyvankooten/1brc)| C | [Danny van Kooten](https://github.com/dannyvankooten)|
+|       00:00.880 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_artsiomkorzun.java)| 21.0.1-graalce  |
+|       00:00.945 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_thomaswue.java)| 21.0.1-graalce |
+|       00:00.961 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_jerrinot.java)| Java   |
+|       00:27.131 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_baseline.java)| 21.0.1-graalce  |
 
 For anyone who is interested in running the code with 1 billion rows, please contact me.
