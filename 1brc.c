@@ -68,7 +68,7 @@ void err_exit(int err, char *msg) {
 }
 
 void open_file(const char *filename) {
-	struct stat st;
+    struct stat st;
     int i, size, len;
     struct proc_context_s *pctx;
 
@@ -77,11 +77,11 @@ void open_file(const char *filename) {
         err_exit(1, "failed to open file");
 
     fstat(input_fd, &st);
-	input_file_sz = st.st_size;
+    input_file_sz = st.st_size;
 
-	input_buff = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, input_fd, 0);
-	if (input_buff == MAP_FAILED)
-		err_exit(2, "failed to mmap");
+    input_buff = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, input_fd, 0);
+    if (input_buff == MAP_FAILED)
+        err_exit(2, "failed to mmap");
 
     size = input_file_sz/nproc;
     len = 0;
@@ -101,7 +101,7 @@ void open_file(const char *filename) {
 }
 
 void finish() {
-	munmap(input_buff, input_file_sz);
+    munmap(input_buff, input_file_sz);
     close(input_fd);
 }
 
@@ -239,9 +239,9 @@ void merge_result() {
 }
 
 int cmp_entries(const void *p1, const void *p2) {
-	const struct city_s *s1, *s2;
-	s1 = *(struct city_s **)p1;
-	s2 = *(struct city_s **)p2;
+    const struct city_s *s1, *s2;
+    s1 = *(struct city_s **)p1;
+    s2 = *(struct city_s **)p2;
     return (strcmp(s1->name, s2->name));
 }
 
@@ -284,7 +284,7 @@ void dump_records(struct city_s **sorted, int entries) {
                    (float)city->sum/city->samples/10.0f,
                    (float)city->max/10.0f);
     }
-	printf("}\n");
+    printf("}\n");
 }
 
 int main(const int argc, const char *argv[]) {
@@ -301,13 +301,13 @@ int main(const int argc, const char *argv[]) {
 
     open_file(argv[1]);
 
-	for (i = 0; i < nproc; i ++) {
+    for (i = 0; i < nproc; i ++) {
         pthread_create(&ctx[0].thread_id, NULL, process_data, &ctx[i]);
-	}
+    }
 
-	for (i = 0; i < nproc; i ++) {
+    for (i = 0; i < nproc; i ++) {
         pthread_join(ctx[0].thread_id, NULL);
-	}
+    }
 
     merge_result();
 
