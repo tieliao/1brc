@@ -7,3 +7,7 @@ all: ${PROG}
 
 ${PROG}: 1brc.c
 	gcc -O3 -Wall -o ${PROG} 1brc.c -lpthread
+
+check:
+	${PROG} ${DATA_FILE} $(nproc) > out.txt
+	diff out.txt result.txt

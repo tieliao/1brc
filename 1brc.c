@@ -100,7 +100,7 @@ void open_file(const char *filename) {
     }
 }
 
-void finish() {
+void close_file() {
     munmap(input_buff, input_file_sz);
     close(input_fd);
 }
@@ -302,11 +302,11 @@ int main(const int argc, const char *argv[]) {
     open_file(argv[1]);
 
     for (i = 0; i < nproc; i ++) {
-        pthread_create(&ctx[0].thread_id, NULL, process_data, &ctx[i]);
+        pthread_create(&ctx[i].thread_id, NULL, process_data, &ctx[i]);
     }
 
     for (i = 0; i < nproc; i ++) {
-        pthread_join(ctx[0].thread_id, NULL);
+        pthread_join(ctx[i].thread_id, NULL);
     }
 
     merge_result();
@@ -314,6 +314,7 @@ int main(const int argc, const char *argv[]) {
     sort_records(&ctx[0]);
     dump_records(ctx[0].sorted, ctx[0].entries);
 
-    finish();
+    close_file();
+
     return 0;
 }
