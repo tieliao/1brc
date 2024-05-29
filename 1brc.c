@@ -93,10 +93,9 @@ void open_file(const char *filename) {
                                     input_file_sz - len);
             if (!pctx->buff_end)
                 err_exit(10, "input file error");
-            pctx->buff_end ++;
         } else
             pctx->buff_end = input_buff + input_file_sz;
-        len += pctx->buff_end - pctx->buff_start;
+        len += pctx->buff_end - pctx->buff_start + 1;
     }
 }
 
@@ -315,6 +314,5 @@ int main(const int argc, const char *argv[]) {
     dump_records(ctx[0].sorted, ctx[0].entries);
 
     close_file();
-
     return 0;
 }
