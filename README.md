@@ -28,7 +28,7 @@ The first version of my code includes already some basic optimizations and gives
 an execution time of 3.6s. I did further optimizations with multi-threads,
 on hashing and parsing. The final version gives an execution time of 0.4s.
 
-For comparaison, I took the top 3 java best-performers and another C implementation.
+For comparaison, I ran the top 3 java best-performers and another C implementation as well.
 | Result (m:s.ms) | Implementation     | Language | Author |
 |-----------------|--------------------|----------|--------|
 |       00:00.405 | [link](https://github.com/tieliao/1brc)| C | [Tie Liao](https://github.com/tieliao) |
