@@ -1,5 +1,5 @@
 # 1️⃣🐝🏎️ The One Billion Row Challenge in C
-I want to provide some benchmarks with C code and challenge implementations in other languages.
+I wanted to provide some benchmarks with C code and challenge implementations in other languages.
 
 ## Build the binary
 gcc -O3 -o 1brc 1brc.c -lpthread
@@ -21,4 +21,4 @@ For comparaison, I took the top 3 java best-performers and another C implementat
 |       00:00.961 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_jerrinot.java)| 21.0.1-graalce   |
 |       00:27.131 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_baseline.java)| 21.0.1-graalce  |
 
-For anyone who is interested in running the code with 1 billion rows, please contact me.
+For anyone who are interested in running the code with 1 billion rows, please contact me.
