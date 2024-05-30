@@ -15,13 +15,14 @@
 #include <stdint.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include <assert.h>
 
 
 /*
  * optimizations:
  *   - mmap() file once
- *   - using hashig table to save records
- *   - hashig code computed when reading buffer
+ *   - using hash table to save records
+ *   - hashing code computed when reading buffer
  *   - using minimal malloc()
  *   - inline critical function
  *   - using integer operations instead of floating operations
@@ -35,9 +36,13 @@
 #define MAX_NAME_LEN          128
 #define MAX_THREADS           32
 
-#define HASH_BITS             14
+#define HASH_BITS             18
 #define HASH_SIZE             (1 << HASH_BITS)
 #define HASH_MASK             (HASH_SIZE - 1)
+
+#ifndef INLINE
+#define INLINE                inline
+#endif
 
 struct city_s {
     struct city_s *next;
@@ -68,7 +73,7 @@ void err_exit(int err, char *msg) {
     exit(err);
 }
 
-void open_file(const char *filename) {
+void init(const char *filename) {
     struct stat st;
     int i, size, len;
     struct proc_context_s *pctx;
@@ -100,12 +105,12 @@ void open_file(const char *filename) {
     }
 }
 
-void close_file() {
+void terminate() {
     munmap(input_buff, input_file_sz);
     close(input_fd);
 }
 
-inline void record_city(struct proc_context_s *pctx, uint32_t hash,
+INLINE void record_city(struct proc_context_s *pctx, uint32_t hash,
                         char *name, int name_len, int temp) {
     struct city_s *city;
     int index;
@@ -118,13 +123,17 @@ inline void record_city(struct proc_context_s *pctx, uint32_t hash,
             /* uniquely identify an entry */
             city->samples ++;
             city->sum += temp;
-            if (temp < city->min)
+            if (temp < city->min) {
                 city->min = temp;
-            else if (temp > city->max)
+                return;
+            }
+            if (temp > city->max)
                 city->max = temp;
             return;
         }
     }
+
+    assert(name_len < (MAX_NAME_LEN -1));
 
     city = (struct city_s *)malloc(sizeof(*city));
     memcpy(city->name, name, name_len);
@@ -285,6 +294,34 @@ void dump_records(struct city_s **sorted, int entries) {
     printf("}\n");
 }
 
+#ifdef DEBUG
+void analyze_hash(struct proc_context_s *pctx) {
+    struct city_s *city;
+    int i, entries, collisions, max_collisions;
+
+    entries = 0;
+    max_collisions = 0;
+    for (i = 0; i < HASH_SIZE; i ++) {
+        city = pctx->hash_table[i];
+        if (!city)
+            continue;
+
+        collisions = 0;
+        for (city = city->next; city; city = city->next)
+            collisions ++;
+
+        if (collisions) {
+            if (collisions > max_collisions)
+                max_collisions = collisions;
+            entries ++;
+        }
+    }
+    printf("Total number of records: %d\n", pctx->entries);
+    printf("Hash table collisions: %d\n", entries);
+    printf("Max collisions: %d\n", max_collisions);
+}
+#endif
+
 int main(const int argc, const char *argv[]) {
     int i;
 
@@ -297,7 +334,7 @@ int main(const int argc, const char *argv[]) {
             nproc = MAX_THREADS;
     }
 
-    open_file(argv[1]);
+    init(argv[1]);
 
     for (i = 0; i < nproc; i ++)
         pthread_create(&ctx[i].thread_id, NULL, process_data, &ctx[i]);
@@ -307,9 +344,13 @@ int main(const int argc, const char *argv[]) {
 
     merge_result();
 
+#ifdef DEBUG
+    analyze_hash(&ctx[0]);
+#else
     sort_records(&ctx[0]);
     dump_records(ctx[0].sorted, ctx[0].entries);
+#endif
 
-    close_file();
+    terminate();
     return 0;
 }

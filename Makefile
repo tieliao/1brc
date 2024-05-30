@@ -6,15 +6,19 @@ all: ${PROG}
 	hyperfine -i '${PROG} ${DATA_FILE} $(nproc)'
 
 ${PROG}: 1brc.c
-	gcc -O3 -Wall -o ${PROG} 1brc.c -lpthread
+	gcc -O3 -DNDEBUG -Wall -o ${PROG} 1brc.c -lpthread
 
-check:
+check: ${PROG}
 	${PROG} ${DATA_FILE} $(nproc) > out.txt
-	diff -q out.txt result.txt
+	diff -q out.txt 1brc/output.txt
+
+debug:
+	gcc -g -O -DDEBUG -Wall -o ${PROG} 1brc.c -lpthread
+	${PROG} ${DATA_FILE} $(nproc)
 
 profiling:
-	gcc -pg -O -Wall -o ${PROG} 1brc.c -lpthread
-	${PROG} ${DATA_FILE} $(nproc) > /dev/null
+	gcc -pg -O -DNDEBUG -DINLINE= -Wall -o ${PROG} 1brc.c -lpthread
+	${PROG} ${DATA_FILE} 1 > /dev/null
 	gprof ${PROG} gmon.out > profiling.txt
 
 clean:
