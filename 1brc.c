@@ -31,7 +31,7 @@
  * minimal error processing is done here
  */
 
-#define MAX_NAME_LEN          48
+#define MAX_NAME_LEN          100
 #define MAX_THREADS           32
 
 #define HASH_BITS             14
