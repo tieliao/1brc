@@ -48,4 +48,6 @@ The above results are using 413 different city names. I also tested with 10k dif
 |       00:02.345 | [link](https://github.com/dannyvankooten/1brc)| C | [Danny van Kooten](https://github.com/dannyvankooten)|
 |       00:33.134 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_baseline.java)| 21.0.1-graalce  | Baseline |
 
+The accuracy of output was successfully checked against that of baseline.
+
 For anyone who is interested in running the code with 1 billion rows, please let me know.
