@@ -2,13 +2,13 @@
 I wanted to provide some benchmarks with C code and challenge implementations in other languages.
 
 ## Generating raw data
-
 ```
 git clone https://github.com/gunnarmorling/1brc
 cd 1brc
 ./mvnw clean verify
 ./create_measurements.sh 100000000
 ```
+This will crrate a file with 100 million rows.
 You may need to install jdk 21.
 
 ## Running the challenge
@@ -37,5 +37,15 @@ For comparaison, I ran the top 3 java best-performers and another C implementati
 |       00:00.945 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_thomaswue.java)| 21.0.1-graalce | [Thomas Wuerthinger](https://github.com/thomaswue), [Quan Anh Mai](https://github.com/merykitty), [Alfonso² Peterssen](https://github.com/mukel)|
 |       00:00.961 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_jerrinot.java)| 21.0.1-graalce   |[Jaromir Hamala](https://github.com/jerrinot)|
 |       00:27.131 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_baseline.java)| 21.0.1-graalce  | Baseline |
+
+The above results are using 413 different city names. I also tested with 10k different city names and the results are:
+| Result (m:s.ms) | Implementation     | Language | Author |
+|-----------------|--------------------|----------|--------|
+|       00:00.691 | [link](https://github.com/tieliao/1brc)| C | [Tie Liao](https://github.com/tieliao) |
+|       00:01.406 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_artsiomkorzun.java)| 21.0.1-graalce  | [Artsiom Korzun](https://github.com/artsiomkorzun)|
+|       00:01.440 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_jerrinot.java)| 21.0.1-graalce   |[Jaromir Hamala](https://github.com/jerrinot)|
+|       00:01.609 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_thomaswue.java)| 21.0.1-graalce | [Thomas Wuerthinger](https://github.com/thomaswue), [Quan Anh Mai](https://github.com/merykitty), [Alfonso² Peterssen](https://github.com/mukel)|
+|       00:02.345 | [link](https://github.com/dannyvankooten/1brc)| C | [Danny van Kooten](https://github.com/dannyvankooten)|
+|       00:33.134 | [link](https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CalculateAverage_baseline.java)| 21.0.1-graalce  | Baseline |
 
 For anyone who is interested in running the code with 1 billion rows, please let me know.
