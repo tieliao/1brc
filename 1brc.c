@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <sys/types.h>
+#include <stdint.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 
@@ -31,7 +32,7 @@
  * minimal error processing is done here
  */
 
-#define MAX_NAME_LEN          100
+#define MAX_NAME_LEN          128
 #define MAX_THREADS           32
 
 #define HASH_BITS             14
@@ -43,7 +44,7 @@ struct city_s {
     char name[MAX_NAME_LEN];
     int min, max, sum;                  /* scaled by 10 */
     int samples;
-    int hash;
+    uint32_t hash;
 };
 
 struct proc_context_s {
@@ -104,7 +105,7 @@ void close_file() {
     close(input_fd);
 }
 
-inline void record_city(struct proc_context_s *pctx, int hash,
+inline void record_city(struct proc_context_s *pctx, uint32_t hash,
                         char *name, int name_len, int temp) {
     struct city_s *city;
     int index;
@@ -140,7 +141,8 @@ inline void record_city(struct proc_context_s *pctx, int hash,
 
 void *process_data(void *data) {
     char *in, *name, *end;
-    int hash, name_len, temp;
+    int name_len, temp;
+    uint32_t hash;
     struct proc_context_s *pctx;
     int digit_x10[256], digit_x100[256];
 
@@ -159,7 +161,7 @@ void *process_data(void *data) {
         name = in;
 
         /* name has at least 1 char followed by ';' */
-        hash = (in[1] << 7) ^ in[0];
+        hash = (in[1] << 8) ^ in[0];
         for (; ; ) {
             if (in[1] == ';') {
                 break;
@@ -169,8 +171,8 @@ void *process_data(void *data) {
                 break;
             }
             in += 2;
-            hash <<= 2;
-            hash ^= (in[1] << 7) ^ in[0];
+            hash = (hash >> 16) + (hash << 16);
+            hash ^= (in[1] << 8) ^ in[0];
         }
         name_len = in - name + 1;
 
