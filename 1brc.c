@@ -34,7 +34,7 @@
  */
 
 #define MAX_NAME_LEN          128
-#define MAX_THREADS           32
+#define MAX_THREADS           128
 
 #define HASH_BITS             18
 #define HASH_SIZE             (1 << HASH_BITS)
@@ -63,7 +63,7 @@ struct proc_context_s {
 } ctx[MAX_THREADS];
 
 int input_fd;
-int input_file_sz;
+uint64_t input_file_sz;
 char *input_buff;
 int nproc = 4;
 
@@ -75,7 +75,8 @@ void err_exit(int err, char *msg) {
 
 void init(const char *filename) {
     struct stat st;
-    int i, size, len;
+    uint64_t size, len;
+    int i;
     struct proc_context_s *pctx;
 
     input_fd = open(filename, O_RDONLY);
@@ -181,7 +182,7 @@ void *process_data(void *data) {
             }
             in += 2;
             hash = (hash >> 16) + (hash << 16);
-            hash ^= (in[1] << 8) ^ in[0];
+            hash ^= (in[0] << 8) ^ in[1];
         }
         name_len = in - name + 1;
 
