@@ -14,6 +14,7 @@ To know more about 1BRC, here are some pointers:
 ## Cloning this repository
 ```
 git clone https://github.com/tieliao/1brc
+cd 1brc
 ```
 
 ## Generating raw data
